@@ -5,7 +5,9 @@ PROG = gusmandel
 
 OBJS = 	image.o \
 		palette.o \
-		mandel.o
+		ppm.o \
+		mandel.o \
+		main.o
 
 all: $(OBJS)
 	$(CC) $(CFLAGS) -o $(PROG) $(OBJS) $(LDLIBS)

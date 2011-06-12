@@ -29,7 +29,7 @@ void palette_destroy(palette_t *palette);
 /**
  * Get color for iteration.
  */
-void get_color(palette_t *palette, int iter);
+rgb_t palette_get_color(palette_t *palette, int iter);
 
 #endif /* __PALETTE_H__ */
 

@@ -1,25 +1,24 @@
 #ifndef __IMAGE_H__
 #define __IMAGE_H__
 
-typedef unsigned char byte_t;
+#include "rgb.h"
 
 typedef struct {
-	byte_t red;
-	byte_t green;
-	byte_t blue;
-	byte_t alpha;
-} rgb_t;
-
-typedef struct {
-	unsigned int size_x;
-	unsigned int size_y;
+	unsigned int width;
+	unsigned int height;
 	rgb_t **rgb_matrix;
 } image_t;
 
 
 void image_destroy(image_t *image);
 
-image_t *image_create(unsigned int size_x, unsigned int size_y);
+image_t *image_create(unsigned int width, unsigned int height);
+
+unsigned int image_get_width(image_t *image);
+
+unsigned int image_get_height(image_t *image);
+
+int image_write_file(image_t *image, const char *file_name);
 
 #endif /* __IMAGE_H__ */
 

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "palette.h"
+#include "ppm.h"
 
 #define MAX_COLORS 255
 
@@ -12,7 +13,7 @@ static palette_t *palette_allocate(int max_iter, rgb_t *rgb_max_iter)
 	if (!pal)
 		return NULL;
 
-    pal->max_iter = max_iter;
+	pal->max_iter = max_iter;
 	pal->rgb_max_iter = rgb_max_iter;
 
 	return pal;
@@ -22,13 +23,13 @@ palette_t *palette_generate(int seed, int size, int max_iter, rgb_t *rgb_max_ite
 {
 	int i;
 	palette_t *pal;
-	
+
 	pal = palette_allocate(max_iter, rgb_max_iter);
 	if (!pal)
 		return NULL;
 
-    pal->size = size;
-    pal->color_array = (rgb_t *)malloc(sizeof(rgb_t) * size);
+	pal->size = size;
+	pal->color_array = (rgb_t *)malloc(sizeof(rgb_t) * size);
 	if (!pal->color_array) {
 		free(pal);
 		return NULL;
@@ -46,17 +47,18 @@ palette_t *palette_generate(int seed, int size, int max_iter, rgb_t *rgb_max_ite
 
 palette_t *palette_load_ppm(const char *file_name, int max_iter, rgb_t *rgb_max_iter)
 {
-	int height, i;
+	unsigned short int height;
+	int i;
 	rgb_t **img;
 	palette_t *pal;
-	
+
 	pal = palette_allocate(max_iter, rgb_max_iter);
 	if (!pal)
 		return NULL;
 
 	// load image rgb matrix
-	img = loadPPM(file_name, &pal->size, &height);
-	if (!pal->color_array) {
+	img = load_ppm(file_name, &pal->size, &height);
+	if (!img) {
 		free(pal);
 		return NULL;
 	}
@@ -79,10 +81,10 @@ void palette_destroy(palette_t *palette)
 	free(palette);
 }
 
-void inline get_color(palette_t *palette, int iter)
+inline rgb_t palette_get_color(palette_t *palette, int iter)
 {
-    if (iter >= palette->max_iter)
-        return palette->rgb_max_iter;
-    return palette->color_array[iter % palette->size];
+	if (iter >= palette->max_iter)
+		return *palette->rgb_max_iter;
+	return palette->color_array[iter % palette->size];
 }
 
