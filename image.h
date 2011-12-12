@@ -20,5 +20,7 @@ unsigned int image_get_height(image_t *image);
 
 int image_write_file(image_t *image, const char *file_name);
 
+image_t *image_downsample(image_t *img, unsigned int xy_cnt);
+
 #endif /* __IMAGE_H__ */
 
