@@ -88,3 +88,32 @@ inline rgb_t palette_get_color(palette_t *palette, int iter)
 	return palette->color_array[iter % palette->size];
 }
 
+void palette_get_color_smooth(palette_t *palette, rgb_t *result_color, double iter)
+{
+	unsigned int iter_int;
+	double percent;
+	rgb_t c1, c2;
+
+	if (iter >= palette->max_iter) {
+		*result_color = *palette->rgb_max_iter;
+		return;
+	}
+
+	iter_int = (unsigned int)iter;
+
+	c1 = palette->color_array[iter_int % palette->size];
+	c2 = palette->color_array[(iter_int + 1) % palette->size];
+
+	if (rgb_equals(&c1, &c2)) {
+		*result_color = c1;
+		return;
+	}
+
+	percent = iter - (double)iter_int;
+
+	/* Calculate gradient between two colors */
+	result_color->red = (int)c1.red + percent * ((int)c2.red - (int)c1.red);
+	result_color->green = (int)c1.green + percent * ((int)c2.green - (int)c1.green);
+	result_color->blue = (int)c1.blue + percent * ((int)c2.blue - (int)c1.blue);
+}
+

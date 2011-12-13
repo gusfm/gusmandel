@@ -41,7 +41,8 @@ int main (int argc, char const* argv[])
 		return EXIT_FAILURE;
 	}
 
-	mandel_calculate(mandel, pal);
+	//mandel_calculate(mandel, pal);
+	mandel_calculate_smooth(mandel, pal);
 
 	if (SUPERSAMPLE_XY_MULT > 1) {
 		image_downsampled = image_downsample(image, SUPERSAMPLE_XY_MULT);

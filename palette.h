@@ -31,5 +31,7 @@ void palette_destroy(palette_t *palette);
  */
 rgb_t palette_get_color(palette_t *palette, int iter);
 
+void palette_get_color_smooth(palette_t *palette, rgb_t *result_color, double iter);
+
 #endif /* __PALETTE_H__ */
 

@@ -4,6 +4,7 @@ LDLIBS += -lm
 PROG = gusmandel
 
 OBJS = 	image.o \
+		rgb.o \
 		palette.o \
 		ppm.o \
 		mandel.o \
