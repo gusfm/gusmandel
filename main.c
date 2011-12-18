@@ -6,7 +6,7 @@
 #include "palette.h"
 #include "mandel.h"
 
-#define OUT_IMG_XY_SIZE 1024
+#define OUT_IMG_XY_SIZE (1024)
 #define SUPERSAMPLE_XY_MULT 8 /* set to 1 if no supersample */
 #define SUPERSAMPLE_IMG_XY_SIZE OUT_IMG_XY_SIZE * SUPERSAMPLE_XY_MULT
 #define MAX_ITER 1024
@@ -32,17 +32,18 @@ int main (int argc, char const* argv[])
 		return EXIT_FAILURE;
 	}
 
-	mandel = mandel_create(image, -0.7435669, 0.1314023, .0022878/2.0);
-	//mandel = mandel_create(image, -1, 0, 2);
-	//mandel = mandel_create(image, -0.7436447860, 0.1318252536, .00029336);
+	//mandel = mandel_create(image, -0.7435669, 0.1314023, .0022878/2.0);
+	//mandel = mandel_create(image, -1, 0, 1);
+	mandel = mandel_create(image, pal, -0.7436447860, 0.1318252536, .00029336/3);
 	//mandel = mandel_create(image, -1, 0.3, 0.007);
 	if (!mandel) {
 		printf("mandel NULL\n");
 		return EXIT_FAILURE;
 	}
 
+	mandel_calc_smooth_threaded(mandel);
 	//mandel_calculate(mandel, pal);
-	mandel_calculate_smooth(mandel, pal);
+	//mandel_calculate_smooth(mandel, pal);
 
 	if (SUPERSAMPLE_XY_MULT > 1) {
 		image_downsampled = image_downsample(image, SUPERSAMPLE_XY_MULT);

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS += -O3 -Wall
-LDLIBS += -lm
+LDLIBS += -lm -lpthread
 PROG = gusmandel
 
 OBJS = 	image.o \
