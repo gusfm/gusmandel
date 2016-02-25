@@ -6,10 +6,10 @@
 typedef unsigned char byte_t;
 
 typedef struct {
-	byte_t red;
-	byte_t green;
-	byte_t blue;
-	byte_t alpha;
+    byte_t red;
+    byte_t green;
+    byte_t blue;
+    byte_t alpha;
 } rgb_t;
 
 bool rgb_equals(rgb_t *rgb1, rgb_t *rgb_2);

@@ -1,5 +1,4 @@
-*.o
 tags
-gusmandel
 *.swp
 *.ppm
+build
