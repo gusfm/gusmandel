@@ -1,2 +1,2 @@
 #!/bin/bash
-valgrind --leak-check=full -v ./gusmandel 100 2 ../palletes/pal.ppm
+valgrind --leak-check=full --show-leak-kinds=all -v ./gusmandel 512 100 2 ../palettes/pal.ppm
