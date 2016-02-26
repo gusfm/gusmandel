@@ -49,7 +49,7 @@ palette_t *palette_generate(int seed, int size, int max_iter,
 palette_t *palette_load_ppm(const char *file_name, int max_iter,
                             rgb_t *rgb_max_iter)
 {
-    unsigned short int height;
+    unsigned int height;
     int i;
     rgb_t **img;
     palette_t *pal;

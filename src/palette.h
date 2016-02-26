@@ -4,8 +4,8 @@
 #include "image.h"
 
 typedef struct {
-    unsigned short size;
-    unsigned short max_iter;
+    unsigned int size;
+    unsigned int max_iter;
     rgb_t *color_array;
     rgb_t *rgb_max_iter;
 } palette_t;
