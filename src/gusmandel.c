@@ -65,8 +65,11 @@ int gusmandel_run(gusmandel_t *gm, int num_threads)
 
 void gusmandel_destroy(gusmandel_t *gm)
 {
-    mandel_destroy(gm->mandel);
-    palette_destroy(gm->pal);
-    image_destroy(gm->image);
+    if (gm->mandel)
+        mandel_destroy(gm->mandel);
+    if (gm->pal)
+        palette_destroy(gm->pal);
+    if (gm->image)
+        image_destroy(gm->image);
     free(gm);
 }
