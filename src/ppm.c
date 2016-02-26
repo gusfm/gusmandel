@@ -6,26 +6,52 @@
 
 #define MAX_PPM_COLORS 255
 
-int ppm_write(const char *file_name, rgb_t **image, int width, int height)
+static void ppm_p3_write_subpixel(FILE *pfile, byte_t byte, int *char_count)
 {
-    int x, y;
-    FILE *pfile;
+    *char_count += fprintf(pfile, "%hhu ", byte);
+    if (*char_count > 67) {
+        fseek(pfile, -1, SEEK_CUR);
+        fprintf(pfile, "\n");
+        *char_count = 0;
+    }
+}
 
-    pfile = fopen(file_name, "w");
+int ppm_p3_write(const char *file_name, rgb_t **image, int width, int height)
+{
+    int char_count = 0;
+    FILE *pfile = fopen(file_name, "w");
     if (pfile == NULL)
         return -1;
 
     fprintf(pfile, "P3\n# gus-mandel-ppm\n%d %d\n%d\n", width, height,
             MAX_PPM_COLORS);
-    for (y = 0; y < height; y++) {
-        for (x = 0; x < width; x++) {
-            fprintf(pfile, "%u %u %u ", (unsigned int)image[x][y].red,
-                    (unsigned int)image[x][y].green,
-                    (unsigned int)image[x][y].blue);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            ppm_p3_write_subpixel(pfile, image[x][y].red, &char_count);
+            ppm_p3_write_subpixel(pfile, image[x][y].green, &char_count);
+            ppm_p3_write_subpixel(pfile, image[x][y].blue, &char_count);
         }
-        fprintf(pfile, "\n");
     }
+    fclose(pfile);
+    return 0;
+}
 
+int ppm_p6_write(const char *file_name, rgb_t **image, int width, int height)
+{
+    FILE *pfile = fopen(file_name, "wb");
+    if (pfile == NULL)
+        return -1;
+
+    fprintf(pfile, "P6\n# gus-mandel-ppm\n%d %d\n%d\n", width, height,
+            MAX_PPM_COLORS);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            fwrite(&image[x][y].red, 1, 1, pfile);
+            fwrite(&image[x][y].green, 1, 1, pfile);
+            fwrite(&image[x][y].blue, 1, 1, pfile);
+        }
+    }
+    fclose(pfile);
     return 0;
 }
 
@@ -68,6 +94,7 @@ rgb_t **ppm_read(const char *file_name, unsigned short int *width,
             j = -1;
         }
     }
+    fclose(pfile);
 
     return image;
 }

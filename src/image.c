@@ -37,7 +37,7 @@ unsigned int image_get_height(image_t *image)
 
 int image_write_file(image_t *image, const char *file_name)
 {
-    return ppm_write(file_name, image->rgb_matrix, image->width, image->height);
+    return ppm_p6_write(file_name, image->rgb_matrix, image->width, image->height);
 }
 
 static void pixel_average(rgb_t **rgb_matrix, rgb_t *rgb_average,
