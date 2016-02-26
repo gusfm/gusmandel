@@ -3,8 +3,6 @@
 #include <errno.h>
 #include "gusmandel.h"
 
-#define OUT_IMG_XY_SIZE (1024)
-
 double data[] = { -0.7435669, 0.1314023, 0.0022878 / 2.0 };
 // double data[] = { -1.0, 0.0, 1.0 };
 // double data[] = { -0.7436447860, 0.1318252536, 0.00029336 / 3 };
@@ -18,25 +16,31 @@ int main(int argc, char const *argv[])
     double imag = data[1];
     double radius = data[2];
 
-    if (argc < 4) {
-        fprintf(
-            stderr,
-            "ERROR: Syntax: %s <max iter> <anti-aliasing> <pallete ppm file>\n",
-            argv[0]);
+    if (argc < 5) {
+        fprintf(stderr,
+                "ERROR: Syntax: %s <image size> <max iter> <anti-aliasing> "
+                "<pallete ppm file>\n",
+                argv[0]);
         exit(EXIT_FAILURE);
     }
 
-    int max_iter = strtol(argv[1], NULL, 10);
+    int image_size = strtol(argv[1], NULL, 10);
+    if (image_size <= 0) {
+        fprintf(stderr, "ERROR: Invalid image size (one dimension only): %d\n",
+                image_size);
+        exit(EXIT_FAILURE);
+    }
+    int max_iter = strtol(argv[2], NULL, 10);
     if (max_iter <= 0) {
         fprintf(stderr, "ERROR: Invalid max iterations value: %d\n", max_iter);
         exit(EXIT_FAILURE);
     }
-    int aa = strtol(argv[2], NULL, 10);
+    int aa = strtol(argv[3], NULL, 10);
     if (aa <= 0) {
         fprintf(stderr, "ERROR: Invalid anti-aliasing value: %d\n", aa);
         exit(EXIT_FAILURE);
     }
-    const char *pal = argv[3];
+    const char *pal = argv[4];
 
     printf(
         "Starting gusmandel...\n"
@@ -45,9 +49,8 @@ int main(int argc, char const *argv[])
         "Anti-aliasing: x%d\n"
         "Palette: %s\n"
         "Output file: out.txt\n",
-        OUT_IMG_XY_SIZE, max_iter, aa, pal);
-    gm = gusmandel_init(real, imag, radius, max_iter, pal, OUT_IMG_XY_SIZE * aa,
-                        aa);
+        image_size, max_iter, aa, pal);
+    gm = gusmandel_init(real, imag, radius, max_iter, pal, image_size * aa, aa);
     if (gm == NULL)
         exit(EXIT_FAILURE);
 
