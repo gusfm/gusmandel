@@ -6,6 +6,7 @@ find_package(Threads REQUIRED)
 
 set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -Wall -std=c11 -O3")
 #set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -Wall -std=c11 -g")
+#set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -Wall -std=c11 -pg")
 #set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O3")
 include_directories(${PROJECT_SOURCE_DIR}/src)
 

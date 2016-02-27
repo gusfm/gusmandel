@@ -27,32 +27,6 @@ static int mandel_iter(double xc, double yc, int max_iter)
     return iter;
 }
 
-#if 0
-double logZn(double x, double y)
-{
-	return log(sqrt(x * x + y * y));
-}
-
-static double mandel_iter_smooth(double xc, double yc, int max_iter)
-{
-	double x, y, x0, y0, tmp_x;
-	int iter = 0;
-
-	x = x0 = xc;
-	y = y0 = yc;
-
-	while (x * x + y * y < (2 * 2) && iter < max_iter) {
-		tmp_x = x * x - y * y + x0;
-		y = 2 * x * y + y0;
-		x = tmp_x;
-		iter++;
-	}
-
-	//return iter + (log(2 * log(2)) - log(logZn(x, y))) / log(2); // wikki formula
-	//return iter + (log(log(2)) - log(logZn(x, y))) / log(2); // article formula
-	return iter - (log(logZn(x, y)) / log(2.0)); // site
-}
-#else
 static double mandel_iter_smooth(double xc, double yc, int max_iter)
 {
     double x, y, x0, y0, x2, y2;
@@ -61,19 +35,15 @@ static double mandel_iter_smooth(double xc, double yc, int max_iter)
     x = x0 = xc;
     y = y0 = yc;
 
-loop:
-    x2 = x * x;
-    y2 = y * y;
-    if (x2 + y2 < 4 && iter < max_iter) {
+    while ((x2 = x * x) + (y2 = y * y) < 4 && iter < max_iter) {
         y = 2 * x * y + y0;
         x = x2 - y2 + x0;
         iter++;
-        goto loop;
     }
 
     return iter - (logf(logf(sqrtf(x2 + y2))) / logf(2.0));  // site
 }
-#endif
+
 void mandel_calculate(mandel_t *mandel, palette_t *pal)
 {
     double delta, rmin, imin, x, y;
